@@ -1,9 +1,5 @@
 # 🛒 Carrinho de Compras
 
-> **⚠️ Projeto de Estudo | Em Desenvolvimento ⚠️**
->
-> Este projeto foi desenvolvido como parte dos estudos na plataforma **Alura**. A aplicação ainda não foi finalizada e novas funcionalidades podem ser implementadas futuramente.
-
 Este projeto é uma simulação de um carrinho de compras interativo. A aplicação permite que o usuário selecione produtos de uma lista, defina a quantidade desejada e adicione ao carrinho, que calcula o subtotal de cada item e o valor total da compra em tempo real.
 
 ## ✨ Funcionalidades
