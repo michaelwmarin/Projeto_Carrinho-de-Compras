@@ -1,10 +1,10 @@
 function adicionar() {
-    // 1. Recuperar valores (sem alteração)
+    // 1. Recuperar valores
     let produtoSelect = document.getElementById("produto");
     let produtoTexto = produtoSelect.value;
     let quantidade = parseInt(document.getElementById("quantidade").value);
 
-    // Validar a entrada (sem alteração)
+    // 2. Validar a entrada (com sua nova regra)
     if (!produtoTexto) {
         alert("Selecione um produto!");
         return;
@@ -12,46 +12,52 @@ function adicionar() {
     if (isNaN(quantidade) || quantidade <= 0) {
         alert("Informe uma quantidade válida!");
         return;
+    } else if (quantidade > 10) {
+        alert("A quantidade máxima por produto é 10.");
+        return;
     }
 
-    // 2. Extrair nome e valor do produto (sem alteração)
+    // 3. Extrair nome e valor do produto (COM A CORREÇÃO do replace)
     let nome = produtoTexto.split(' - R$')[0];
     let valorUnitario = parseFloat(produtoTexto.split('R$')[1].replace(/\./g, '').replace(',', '.'));
 
-    // 3. Procurar se o item JÁ EXISTE no carrinho (sem alteração)
+    // 4. Procurar se o item JÁ EXISTE no carrinho
     let itemExistente = document.querySelector(`#lista-produtos .carrinho__produtos__produto[data-nome="${nome}"]`);
 
     if (itemExistente) {
-        // 4. Se o item EXISTE, atualiza a quantidade e o subtotal
+        // 5. Se o item EXISTE, atualiza a quantidade e o subtotal
         let spanQuantidade = itemExistente.querySelector('.texto-azul');
         let quantidadeAtual = parseInt(spanQuantidade.textContent);
         let novaQuantidade = quantidadeAtual + quantidade;
-        
-        // NOVO: Calcula o subtotal para o item existente
         let subtotal = novaQuantidade * valorUnitario;
+
+        // Formata o subtotal com o ponto de milhar (COM A CORREÇÃO do toLocaleString)
+        let subtotalFormatado = subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         
-        // ALTERADO: Usa o 'subtotal' no HTML
-        itemExistente.innerHTML = `<span class="texto-azul">${novaQuantidade}x</span> ${nome} <span class="texto-azul">R$${subtotal.toFixed(2).replace('.',',')}</span>`;
+        // Usa a variável formatada
+        itemExistente.innerHTML = `<span class="texto-azul">${novaQuantidade}x</span> ${nome} <span class="texto-azul">${subtotalFormatado}</span>`;
 
     } else {
-        // 5. Se o item NÃO EXISTE, cria um novo com o subtotal
+        // 6. Se o item NÃO EXISTE, cria um novo
         let lista = document.getElementById('lista-produtos');
         let sec = document.createElement('section');
         sec.className = 'carrinho__produtos__produto';
-        sec.setAttribute('data-nome', nome); 
+        sec.setAttribute('data-nome', nome);
 
-        // NOVO: Calcula o subtotal para o novo item
         let subtotal = quantidade * valorUnitario;
 
-        // ALTERADO: Usa o 'subtotal' no HTML
-        sec.innerHTML = `<span class="texto-azul">${quantidade}x</span> ${nome} <span class="texto-azul">R$${subtotal.toFixed(2).replace('.',',')}</span>`;
+        // Formata o subtotal com o ponto de milhar (COM A CORREÇÃO do toLocaleString)
+        let subtotalFormatado = subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // Usa a variável formatada
+        sec.innerHTML = `<span class="texto-azul">${quantidade}x</span> ${nome} <span class="texto-azul">${subtotalFormatado}</span>`;
         lista.appendChild(sec);
     }
-    
-    // 6. Atualizar o valor total do carrinho (funciona sem alteração)
+
+    // 7. Atualizar o valor total do carrinho
     atualizarValorTotal();
-    
-    // Limpar campos após adicionar (sem alteração)
+
+    // 8. Limpar campos após adicionar
     document.getElementById("quantidade").value = 1;
     produtoSelect.selectedIndex = 0;
 }
